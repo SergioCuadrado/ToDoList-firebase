@@ -1,26 +1,62 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Todolist from "./components/Todolist";
 
-function App() {
+import { ToDoList } from "./interfaces";
+import { addANewDocument } from "./firebase";
+
+import styled, { ThemeProvider } from "styled-components";
+import { GlobalStyles } from "./components/GlobalStyles";
+import { lightTheme, darkTheme } from "./components/Themes";
+
+import { BsSunFill, BsMoonFill } from "react-icons/bs";
+
+const ChangeColor = styled.button`
+  background-color: ${(props) =>
+    props.theme.color === "light" ? "#805ad5" : "#fbd38d"};
+`;
+
+const App = () => {
+  const [values, setValue] = useState<ToDoList>({
+    name: "",
+    isDone: false,
+  });
+
+  const [theme, setTheme] = useState("dark");
+
+  const themeToggler = () => {
+    theme === "light" ? setTheme("dark") : setTheme("light");
+  };
+
+  const addValue = (e: any) => {
+    const { name, value } = e.target;
+    setValue({ ...values, [name]: value, isDone: false });
+  };
+
+  const sendData = async (e: any) => {
+    e.preventDefault();
+    addANewDocument(values);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <>
+        <GlobalStyles />
+        <label htmlFor="todo">ToDo List</label>
+        <input
+          type="text"
+          name="name"
+          id="todo"
+          autoFocus
+          onChange={(e) => addValue(e)}
+        />
+        <button onClick={sendData}>Save</button>
+        <ChangeColor onClick={themeToggler} theme={{ color: theme }}>
+          {theme === "light" ? <BsMoonFill /> : <BsSunFill />}
+        </ChangeColor>
+        <Todolist />
+      </>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
