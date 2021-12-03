@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ToDoList } from "../interfaces";
+import { ToDoList } from "./interfaces";
 import styled from "styled-components";
 
 import { firestore, updateADocument, deleteADocument } from "../firebase";
@@ -15,7 +15,7 @@ const Section = styled.div`
 `;
 
 const Item = styled.div`
-  border: 1px solid #000;
+  border: 1px solid ${(props) => (props.theme === "light" ? "#000" : "#fff")};
   border-radius: 5px;
   width: 75%;
   display: flex;
@@ -23,6 +23,7 @@ const Item = styled.div`
   justify-content: space-between;
   place-items: center;
   padding: 0 10px;
+  background: ${(props) => props.theme === "light" && "#f4ede4"};
 `;
 
 const Paragraph = styled.p`
@@ -45,7 +46,7 @@ const EliminatedToDo = styled.a`
   color: red;
 `;
 
-const Todolist = () => {
+const Todolist = ({ theme }: { theme: string }) => {
   const [list, setList] = useState<ToDoList[]>([]);
 
   useEffect(() => {
@@ -68,7 +69,7 @@ const Todolist = () => {
     <Section>
       {list ? (
         list.map((valuelist, index) => (
-          <Item key={index}>
+          <Item key={index} theme={theme}>
             <Paragraph theme={{ done: valuelist.isDone }}>
               {valuelist.name}
             </Paragraph>

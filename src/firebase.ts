@@ -6,18 +6,17 @@ import {
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { ToDoList } from "./interfaces";
+import { ToDoList } from "./components/interfaces";
 
 const firebaseApp = initializeApp({
-  apiKey: "AIzaSyAclayMlXKCrOLcHyIrAMorcGwPt1jFeUk",
-  authDomain: "todo-8c363.firebaseapp.com",
-  databaseURL:
-    "https://todo-8c363-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "todo-8c363",
-  storageBucket: "todo-8c363.appspot.com",
-  messagingSenderId: "1078915129239",
-  appId: "1:1078915129239:web:d66149ea0124878dcaeed2",
-  measurementId: "G-8T2WEN0T6H",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDERID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 });
 
 export const firestore = getFirestore();
